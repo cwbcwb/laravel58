@@ -29,13 +29,13 @@ class PosterController extends Controller
         // 容错级别
         $errorCorrectionLevel = 'H';
         $img = new \QRcode();
-        $time = microtime(true)*10000;
+        $time = microtime(true) * 10000;
         // 所有生成图片临时放置在这个目录中
         $imgPath = storage_path('app/public/');
         // 确定本地存储二维码的名称
-        $qrcodeName = 'qrcode'.$time.'.png';
+        $qrcodeName = 'qrcode' . $time . '.png';
         // 确定二维码的位置
-        $qrcodePath = $imgPath.$qrcodeName;
+        $qrcodePath = $imgPath . $qrcodeName;
         // 生成二维码
         $img->png($qrcodeText, $qrcodePath, $errorCorrectionLevel, $qrcodeSize, 0);
 
@@ -44,8 +44,8 @@ class PosterController extends Controller
         if (Cache::has($postKey)) {
             // 从缓存中获取底图
             $data = Cache::get($postKey);
-            $fileName = 'post'.$time.'.png';
-            $filePath = $imgPath.$fileName;
+            $fileName = 'post' . $time . '.png';
+            $filePath = $imgPath . $fileName;
             // 将内容写入文件中
             Storage::put($fileName, $data);
             $imageRes = imagecreatefrompng($filePath);
@@ -55,7 +55,7 @@ class PosterController extends Controller
             // 获取海报图片大小
             $backgroundInfo = getimagesize($postUrl);
             // 根据图片后缀名生成对应创建图像的函数名
-            $backgroundFunc = 'imagecreatefrom'.image_type_to_extension($backgroundInfo[2], false);
+            $backgroundFunc = 'imagecreatefrom' . image_type_to_extension($backgroundInfo[2], false);
             // 创建图像
             $imageRes = $backgroundFunc($postUrl);
             $data = file_get_contents($postUrl);
@@ -73,8 +73,8 @@ class PosterController extends Controller
         imagecopy($imageRes, $srcImg, $qrcodeX, $qrcodeY, 0, 0, $srcW, $srcH);
 
         // 根据需求生成图片
-        $picLocalName = 'pic'.$time.'.jpg';
-        $picLocalPath = $imgPath.$picLocalName;
+        $picLocalName = 'pic' . $time . '.jpg';
+        $picLocalPath = $imgPath . $picLocalName;
         imagejpeg($imageRes, $picLocalPath);
         if (!$request->get('picName')) {
             $headers = array(
@@ -84,11 +84,12 @@ class PosterController extends Controller
             return response()->file($picLocalPath, $headers);
         } else {
             $picName = $request->get('picName');
-            $picName = $picName.'.jpg';
+            $picName = $picName . '.jpg';
             // 下载图片
             return response()->download($picLocalPath, $picName);
         }
     }
+
     public function test()
     {
         return view('admin.member.add');
