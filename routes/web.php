@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 Route::get("Admin/poster/getposter", "Admin\PosterController@getposter");
 Route::get("Admin/poster/test", "Admin\PosterController@test");
+s
