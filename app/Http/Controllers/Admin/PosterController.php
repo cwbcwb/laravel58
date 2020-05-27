@@ -18,18 +18,14 @@ class PosterController extends Controller
      * @param Request $request 请求参数
      * @return void
      */
-    public function getPoster(Request $request)
+    public function getposter(Request $request)
     {
-        // 获取海报底图地址
-        $postUrl = $request->get('postUrl');
-        // 获取二维码内容
-        $qrcodeText = $request->get('qrcodeText');
-        // 获取二维码在海报中的横坐标
-        $qrcodeX = $request->get('qrcodeX');
-        // 获取二维码在海报中的纵坐标
-        $qrcodeY = $request->get('qrcodeY');
-        // 获取二维码在海报中的尺寸
-        $qrcodeSize = $request->get('qrcodeSize');
+        $postUrl = $request->get('postUrl'); // 获取海报底图地址
+        $qrcodeText = $request->get('qrcodeText'); // 获取二维码内容
+        $qrcodeX = $request->get('qrcodeX'); // 获取二维码在海报中的横坐标
+        $qrcodeY = $request->get('qrcodeY'); // 获取二维码在海报中的纵坐标
+        $qrcodeSize = $request->get('qrcodeSize'); // 获取二维码在海报中的尺寸
+
         // 容错级别
         $errorCorrectionLevel = 'H';
         $img = new \QRcode();
@@ -42,9 +38,12 @@ class PosterController extends Controller
         $qrcodePath = $imgPath.$qrcodeName;
         // 生成二维码
         $img->png($qrcodeText, $qrcodePath, $errorCorrectionLevel, $qrcodeSize, 0);
-        if (Cache::has(md5($postUrl))) {
+
+        // 绘制海报底图
+        $postKey = md5($postUrl);
+        if (Cache::has($postKey)) {
             // 从缓存中获取底图
-            $data = Cache::get(md5($postUrl));
+            $data = Cache::get($postKey);
             $fileName = 'post'.$time.'.png';
             $filePath = $imgPath.$fileName;
             // 将内容写入文件中
@@ -59,9 +58,10 @@ class PosterController extends Controller
             $backgroundFunc = 'imagecreatefrom'.image_type_to_extension($backgroundInfo[2], false);
             // 创建图像
             $imageRes = $backgroundFunc($postUrl);
-            $data =file_get_contents($postUrl);
-            Cache::put(md5($postUrl), $data);
+            $data = file_get_contents($postUrl);
+            Cache::put($postKey, $data);
         }
+
         // 从本地存储获得二维码的位置
         $srcImg = imagecreatefrompng($qrcodePath);
         Storage::delete($qrcodeName);
@@ -71,6 +71,7 @@ class PosterController extends Controller
         $srcH = imagesy($srcImg);
         // 将该二维码复制到设置好了的图像的指定位置
         imagecopy($imageRes, $srcImg, $qrcodeX, $qrcodeY, 0, 0, $srcW, $srcH);
+
         // 根据需求生成图片
         $picLocalName = 'pic'.$time.'.jpg';
         $picLocalPath = $imgPath.$picLocalName;
