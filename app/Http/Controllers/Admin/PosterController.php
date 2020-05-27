@@ -42,7 +42,7 @@ class PosterController extends Controller
         // 绘制海报底图
         $postKey = md5($postUrl);
         if (Cache::has($postKey)) {
-            // 从缓存中获取底图
+            // 从缓存之中获取底图
             $data = Cache::get($postKey);
             $fileName = 'post' . $time . '.png';
             $filePath = $imgPath . $fileName;
