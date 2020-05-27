@@ -76,7 +76,7 @@ class PosterController extends Controller
         $picLocalName = 'pic' . $time . '.jpg';
         $picLocalPath = $imgPath . $picLocalName;
         imagejpeg($imageRes, $picLocalPath);
-        if (!$request->get('picName')) {
+        if (!$request->get('picName')){
             $headers = array(
                 'content-type' => 'image/jpeg'
             );
