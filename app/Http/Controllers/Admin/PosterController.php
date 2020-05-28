@@ -8,6 +8,7 @@
  * @license  GPL https://cwb.com
  * @link     https://cwb.com
  */
+
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
