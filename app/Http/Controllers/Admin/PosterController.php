@@ -1,21 +1,38 @@
 <?php
-
+/**
+ * 实现海报图片生成
+ *
+ * @category Cwb
+ * @package  PSR
+ * @author   Cwb <1194245120@qq.com>
+ * @license  GPL https://cwb.com
+ * @link     https://cwb.com
+ */
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use phpqrcode;
 
+/**
+ * 实现海报图片生成
+ *
+ * @category Cwb
+ * @package  PSR
+ * @author   Cwb <1194245120@qq.com>
+ * @license  GPL https://cwb.com
+ * @link     https://cwb.com
+ */
 class PosterController extends Controller
 {
     /**
      * 实现海报
      *
      * @param Request $request 请求参数
+     *
      * @return void
      */
     public function getposter(Request $request)
@@ -76,7 +93,7 @@ class PosterController extends Controller
         $picLocalName = 'pic' . $time . '.jpg';
         $picLocalPath = $imgPath . $picLocalName;
         imagejpeg($imageRes, $picLocalPath);
-        if (!$request->get('picName')){
+        if (!$request->get('picName')) {
             $headers = array(
                 'content-type' => 'image/jpeg'
             );
@@ -90,9 +107,13 @@ class PosterController extends Controller
         }
     }
 
+    /**
+     * 实现海报
+     *
+     * @return void
+     */
     public function test()
     {
         return view('admin.member.add');
     }
 }
-
