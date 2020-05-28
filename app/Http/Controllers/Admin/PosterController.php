@@ -57,7 +57,7 @@ class PosterController extends Controller
         // 生成二维码
         $img->png($qrcodeText, $qrcodePath, $errorCorrectionLevel, $qrcodeSize, 0);
 
-        // 绘制海报底图
+        // 开始绘制海报底图
         $postKey = md5($postUrl);
         if (Cache::has($postKey)) {
             // 从缓存之中获取到底图
